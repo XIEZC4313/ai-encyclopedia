@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 科普百科</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;--card:#21262d;--card-hover:#282e3a;
+  --border:#30363d;--text:#e6edf3;--text2:#8b949e;--accent:#58a6ff;--accent2:#79c0ff;
+  --green:#3fb950;--orange:#d29922;--red:#f85149;--purple:#bc8cff;--pink:#f778ba;
+  --shadow:0 2px 12px rgba(0,0,0,.4);--radius:12px;
+}
+.light{
+  --bg:#f6f8fa;--bg2:#ffffff;--bg3:#f0f3f7;--card:#fff;--card-hover:#f6f8fa;
+  --border:#d0d7de;--text:#1f2328;--text2:#656d76;--accent:#0969da;--accent2:#1a6bca;
+  --green:#1a7f37;--orange:#9a6700;--red:#cf222e;--purple:#8250df;--pink:#bf3989;
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);transition:background .3s,color .3s;overflow-x:hidden;}
+a{color:var(--accent);text-decoration:none;}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,17,23,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;transition:background .3s;}
+.light nav{background:rgba(246,248,250,.85)}
+.nav-left{display:flex;align-items:center;gap:16px;}
+.nav-logo{font-size:1.3rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;gap:6px;list-style:none;}
+.nav-links a{padding:6px 12px;border-radius:8px;font-size:.9rem;color:var(--text2);transition:.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--accent);background:rgba(88,166,255,.1)}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.search-box{position:relative;}
+.search-box input{width:200px;padding:7px 12px 7px 34px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--text);font-size:.85rem;outline:none;transition:.2s}
+.search-box input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(88,166,255,.15)}
+.search-box i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text2)}
+.theme-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:.2s}
+.theme-btn:hover{background:var(--card-hover)}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 60px;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;z-index:0;}
+.hero canvas{width:100%;height:100%;display:block;}
+.hero-content{position:relative;z-index:1;max-width:800px;}
+.hero h1{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;margin-bottom:16px;line-height:1.2;}
+.hero h1 span{background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{font-size:1.15rem;color:var(--text2);max-width:600px;margin:0 auto 32px;line-height:1.7;}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:36px;}
+.badge{padding:5px 14px;border-radius:20px;font-size:.78rem;font-weight:600;border:1px solid}
+.badge.blue{color:var(--accent);border-color:rgba(88,166,255,.3);background:rgba(88,166,255,.08)}
+.badge.green{color:var(--green);border-color:rgba(63,185,80,.3);background:rgba(63,185,80,.08)}
+.badge.purple{color:var(--purple);border-color:rgba(188,140,255,.3);background:rgba(188,140,255,.08)}
+.badge.pink{color:var(--pink);border-color:rgba(247,120,186,.3);background:rgba(247,120,186,.08)}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn{padding:12px 28px;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;border:none;transition:.2s;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#3d8bfd);color:#fff;box-shadow:0 4px 20px rgba(88,166,255,.3)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(88,166,255,.4)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--accent);background:rgba(88,166,255,.06)}
+
+/* Sections */
+section{padding:80px 24px;max-width:1200px;margin:0 auto;}
+.section-title{text-align:center;margin-bottom:50px;}
+.section-title h2{font-size:2rem;font-weight:700;margin-bottom:12px;}
+.section-title p{color:var(--text2);font-size:1.05rem;max-width:560px;margin:0 auto;}
+
+/* Cards Grid */
+.grid{display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:.3s;cursor:pointer;}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--accent);}
+.card-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:18px;}
+.card h3{font-size:1.15rem;margin-bottom:10px;}
+.card p{color:var(--text2);font-size:.92rem;line-height:1.6;}
+.card .more{margin-top:14px;color:var(--accent);font-weight:600;font-size:.9rem;display:none;}
+.card.expanded .more{display:inline;}
+.card.expanded .desc-full{display:block;}
+.desc-full{display:none;color:var(--text2);font-size:.88rem;line-height:1.7;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+
+/* Timeline */
+.timeline{position:relative;padding:20px 0 10px;margin-left:20px;border-left:2px solid var(--border);}
+.tl-item{position:relative;margin-bottom:32px;padding-left:32px;}
+.tl-item::before{content:'';position:absolute;left:-37px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid var(--bg2);z-index:1;transition:.3s;}
+.tl-item:hover::before{transform:scale(1.3);box-shadow:0 0 0 6px rgba(88,166,255,.25);}
+.tl-year{font-size:.8rem;color:var(--accent);font-weight:700;margin-bottom:4px;}
+.tl-item h3{font-size:1.05rem;margin-bottom:6px;}
+.tl-item p{color:var(--text2);font-size:.88rem;line-height:1.5;}
+
+/* Gallery */
+.gallery{display:grid;gap:20px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}
+.gal-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:.3s;cursor:pointer;}
+.gal-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);}
+.gal-img{height:140px;display:flex;align-items:center;justify-content:center;font-size:2.8rem;transition:.3s;}
+.gal-card:hover .gal-img{filter:brightness(1.15);}
+.gal-body{padding:18px;}
+.gal-body h3{font-size:1rem;margin-bottom:6px;}
+.gal-body p{color:var(--text2);font-size:.85rem;line-height:1.5;}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
+.tag{padding:2px 9px;border-radius:6px;font-size:.72rem;font-weight:600;background:rgba(88,166,255,.1);color:var(--accent);}
+
+/* News */
+.news-tabs{display:flex;gap:4px;margin-bottom:28px;flex-wrap:wrap;}
+.tab-btn{padding:8px 20px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;font-size:.88rem;font-weight:600;transition:.2s;}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.tab-btn:hover:not(.active){border-color:var(--accent);color:var(--accent);}
+.news-list{display:grid;gap:16px;}
+.news-item{display:flex;gap:16px;padding:18px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);transition:.2s;align-items:flex-start;}
+.news-item:hover{border-color:var(--accent);box-shadow:var(--shadow);}
+.news-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.news-info h4{font-size:.95rem;margin-bottom:4px;line-height:1.4;}
+.news-info .meta{font-size:.78rem;color:var(--text2);display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.news-info .score{color:var(--green);font-weight:700;}
+.news-info .domain{color:var(--accent);}
+.news-item a{color:var(--accent);font-size:.82rem;display:inline-flex;align-items:center;gap:4px;margin-top:6px;}
+.load-more-btn{display:block;margin:30px auto 0;padding:12px 36px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text);cursor:pointer;font-size:.92rem;transition:.2s;}
+.load-more-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* Back top */
+.back-top{position:fixed;bottom:30px;right:30px;width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;font-size:1.2rem;display:none;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(88,166,255,.35);transition:.2s;z-index:99;}
+.back-top:hover{transform:translateY(-3px);}
+
+/* Footer */
+footer{text-align:center;padding:40px 24px;color:var(--text2);font-size:.85rem;border-top:1px solid var(--border);margin-top:40px;}
+footer a{color:var(--accent)}
+
+/* Animations */
+.fade-up{opacity:0;transform:translateY(30px);transition:opacity .6s ease-out,transform .6s ease-out;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .search-box input{width:140px}
+  .grid{grid-template-columns:1fr}
+  .gallery{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:2rem}
+  section{padding:50px 16px}
+}
+@media(max-width:480px){.gallery{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <div class="nav-logo"><i class="fas fa-brain"></i> AI 百科</div>
+    <ul class="nav-links">
+      <li><a href="#knowledge" class="active">基础知识</a></li>
+      <li><a href="#concepts">核心概念</a></li>
+      <li><a href="#timeline">发展历程</a></li>
+      <li><a href="#gallery">应用画廊</a></li>
+      <li><a href="#news">实时资讯</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="搜索内容..."></div>
+    <button class="theme-btn" id="themeBtn" title="切换主题"><i class="fas fa-moon"></i></button>
+  </div>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-bg"><canvas id="particles"></canvas></div>
+  <div class="hero-content">
+    <h1>探索 <span>人工智能</span> 的无限可能</h1>
+    <p>从图灵测试到大语言模型，一站式了解 AI 的前世今生、核心概念与前沿应用。</p>
+    <div class="hero-badges">
+      <span class="badge blue"><i class="fas fa-robot"></i> 大语言模型</span>
+      <span class="badge green"><i class="fas fa-leaf"></i> 机器学习</span>
+      <span class="badge purple"><i class="fas fa-network-wired"></i> 深度学习</span>
+      <span class="badge pink"><i class="fas fa-eye"></i> 计算机视觉</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#knowledge" class="btn btn-primary"><i class="fas fa-book-open"></i> 开始探索</a>
+      <a href="#news" class="btn btn-outline"><i class="fas fa-newspaper"></i> 最新资讯</a>
+    </div>
+  </div>
+</section>
+
+<section id="knowledge">
+  <div class="section-title">
+    <h2><i class="fas fa-lightbulb"></i> AI 基础知识</h2>
+    <p>了解人工智能领域的核心概念与技术分支</p>
+  </div>
+  <div class="grid" id="knowledgeGrid">
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon" style="background:rgba(88,166,255,.12);color:var(--accent)"><i class="fas fa-brain"></i></div>
+      <h3>什么是人工智能</h3>
+      <p class="desc-full">人工智能（AI）是计算机科学的一个分支，旨在创建能够执行通常需要人类智能的任务的系统，包括学习、推理、问题解决、感知和语言理解。</p>
+      <div class="more">展开详情 <i class="fas fa-chevron-down"></i></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon" style="background:rgba(63,185,80,.12);color:var(--green)"><i class="fas fa-seedling"></i></div>
+      <h3>机器学习</h3>
+      <p class="desc-full">机器学习是 AI 的核心子领域，让计算机通过数据自动学习和改进。包含监督学习、无监督学习和强化学习三大范式，广泛应用于推荐系统、欺诈检测等领域。</p>
+      <div class="more">展开详情 <i class="fas fa-chevron-down"></i></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon" style="background:rgba(188,140,255,.12);color:var(--purple)"><i class="fas fa-network-wired"></i></div>
+      <h3>深度学习</h3>
+      <p class="desc-full">深度学习利用多层神经网络模拟人脑处理信息的方式，在图像识别、语音识别、自然语言处理等任务中表现卓越。CNN、RNN、Transformer 是其核心架构。</p>
+      <div class="more">展开详情 <i class="fas fa-chevron-down"></i></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon" style="background:rgba(247,120,186,.12);color:var(--pink)"><i class="fas fa-eye"></i></div>
+      <h3>计算机视觉</h3>
+      <p class="desc-full">计算机视觉让机器能够"看见"和理解图像与视频内容，应用于人脸识别、自动驾驶、医学影像分析、AR/VR 等场景，代表模型包括 ResNet、YOLO 等。</p>
+      <div class="more">展开详情 <i class="fas fa-chevron-down"></i></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon" style="background:rgba(210,153,34,.12);color:var(--orange)"><i class="fas fa-comments"></i></div>
+      <h3>自然语言处理</h3>
+      <p class="desc-full">NLP 让机器理解、生成和处理人类语言。从早期的规则系统到如今的 Transformer 架构（如 GPT、BERT），NLP 是聊天机器人、翻译和文本分析的核心技术。</p>
+      <div class="more">展开详情 <i class="fas fa-chevron-down"></i></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon" style="background:rgba(248,81,73,.12);color:var(--red)"><i class="fas fa-shield-alt"></i></div>
+      <h3>AI 安全与伦理</h3>
+      <p class="desc-full">随着 AI 能力增长，安全性、公平性和透明度变得至关重要。涵盖对抗样本防御、算法偏见消除、隐私保护以及可解释 AI 等研究方向。</p>
+      <div class="more">展开详情 <i class="fas fa-chevron-down"></i></div>
+    </div>
+  </div>
+</section>
+
+<section id="concepts">
+  <div class="section-title">
+    <h2><i class="fas fa-cogs"></i> 核心概念解析</h2>
+    <p>深入理解驱动 AI 发展的关键技术</p>
+  </div>
+  <div class="grid" id="conceptsGrid">
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon" style="background:rgba(88,166,255,.12);color:var(--accent)"><i class="fas fa-brain"></i></div>
+      <h3>神经网络</h3>
+      <p>受生物神经元启发的计算模型，由输入层、隐藏层和输出层组成，能够学习复杂的非线性映射关系，是现代 AI 的基础。</p>
+      <div class="more">展开详情 <i class="fas fa-chevron-down"></i></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon" style="background:rgba(63,185,80,.12);color:var(--green)"><i class="fas fa-layer-group"></i></div>
+      <h3>卷积神经网络 (CNN)</h3>
+      <p>专为图像处理设计的网络结构，通过卷积核提取空间特征，在图像分类、目标检测等任务上表现优异。</p>
+      <div class="more">展开详情 <i class="fas fa-chevron-down"></i></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon" style="background:rgba(188,140,255,.12);color:var(--purple)"><i class="fas fa-arrows-alt-h"></i></div>
+      <h3>Transformer 架构</h3>
+      <p>基于自注意力机制的革命性架构，彻底改变了 NLP 领域。BERT、GPT 等大模型均基于此架构，支持并行训练。</p>
+      <div class="more">展开详情 <i class="fas fa-chevron-down"></i></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon" style="background:rgba(247,120,186,.12);color:var(--pink)"><i class="fas fa-graduation-cap"></i></div>
+      <h3>大语言模型 (LLM)</h3>
+      <p>基于海量文本训练的通用语言模型，具备对话、推理、代码生成等涌现能力。代表有 GPT-4、Claude、Llama 等。</p>
+      <div class="more">展开详情 <i class="fas fa-chevron-down"></i></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon" style="background:rgba(210,153,34,.12);color:var(--orange)"><i class="fas fa-rss"></i></div>
+      <h3>RAG 检索增强生成</h3>
+      <p>将外部知识检索与 LLM 生成结合，显著减少幻觉问题，是目前最主流的 AI 应用增强技术之一。</p>
+      <div class="more">展开详情 <i class="fas fa-chevron-down"></i></div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon" style="background:rgba(248,81,73,.12);color:var(--red)"><i class="fas fa-robot"></i></div>
+      <h3>智能体 (Agent)</h3>
+      <p>能够自主感知环境、制定计划并执行任务的 AI 系统，是实现通用人工智能 (AGI) 的关键路径。</p>
+      <div class="more">展开详情 <i class="fas fa-chevron-down"></i></div>
+    </div>
+  </div>
+</section>
+
+<section id="timeline">
+  <div class="section-title">
+    <h2><i class="fas fa-history"></i> 发展历程时间线</h2>
+    <p>从图灵测试到 AGI 探索，回顾 AI 的关键里程碑</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-item fade-up"><div class="tl-year">1950</div><h3>图灵测试</h3><p>艾伦·图灵发表《计算机器与智能》，提出著名的图灵测试，奠定 AI 哲学基础。</p></div>
+    <div class="tl-item fade-up"><div class="tl-year">1956</div><h3>达特茅斯会议</h3><p>约翰·麦卡锡等人首次提出"人工智能"术语，标志着 AI 作为独立学科的诞生。</p></div>
+    <div class="tl-item fade-up"><div class="tl-year">1966</div><h3>ELIZA 聊天机器人</h3><p>Joseph Weizenbaum 开发出最早的聊天程序 ELIZA，模拟心理治疗师，开创人机对话先河。</p></div>
+    <div class="tl-item fade-up"><div class="tl-year">1986</div><h3>反向传播算法复兴</h3><p>Rumelhart、Hinton 等人重新推广反向传播算法，点燃神经网络研究的复兴之火。</p></div>
+    <div class="tl-item fade-up"><div class="tl-year">1997</div><h3>深蓝击败卡斯帕罗夫</h3><p>IBM 深蓝成为首个在国际象棋中战胜世界冠军的计算机系统，引发全球关注。</p></div>
+    <div class="tl-item fade-up"><div class="tl-year">2012</div><h3>AlexNet 革命</h3><p>AlexNet 在 ImageNet 竞赛中以压倒性优势夺冠，开启了深度学习的黄金时代。</p></div>
+    <div class="tl-item fade-up"><div class="tl-year">2017</div><h3>Transformer 诞生</h3><p>Google 提出 Transformer 架构（《Attention Is All You Need》），成为现代大模型的基石。</p></div>
+    <div class="tl-item fade-up"><div class="tl-year">2022</div><h3>ChatGPT 发布</h3><p>OpenAI 发布 ChatGPT，以惊人的对话能力引爆全球，拉开生成式 AI 大幕。</p></div>
+    <div class="tl-item fade-up"><div class="tl-year">2024-26</div><h3>多模态与智能体时代</h3><p>GPT-4o、Claude 3.5 等实现任意多模态理解与生成；智能体框架（AutoGPT、LangChain）推动 AI 自主化进程。</p></div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="section-title">
+    <h2><i class="fas fa-palette"></i> AI 应用画廊</h2>
+    <p>探索人工智能在各行各业的前沿应用</p>
+  </div>
+  <div class="gallery">
+    <div class="gal-card">
+      <div class="gal-img" style="background:linear-gradient(135deg,rgba(88,166,255,.1),rgba(121,192,255,.15))"><i class="fas fa-pen-fancy" style="color:var(--accent)"></i></div>
+      <div class="gal-body">
+        <h3>文字创作</h3>
+        <p>AI 写作助手可自动生成文章、营销文案、剧本和创意故事。</p>
+        <div class="tags"><span class="tag">GPT-4</span><span class="tag">Claude</span><span class="tag">文案生成</span></div>
+      </div>
+    </div>
+    <div class="gal-card">
+      <div class="gal-img" style="background:linear-gradient(135deg,rgba(63,185,80,.1),rgba(100,210,120,.15))"><i class="fas fa-code" style="color:var(--green)"></i></div>
+      <div class="gal-body">
+        <h3>代码生成</h3>
+        <p>GitHub Copilot 等工具能自动补全代码、生成函数和调试错误。</p>
+        <div class="tags"><span class="tag">Copilot</span><span class="tag">CodeLlama</span><span class="tag">编程助手</span></div>
+      </div>
+    </div>
+    <div class="gal-card">
+      <div class="gal-img" style="background:linear-gradient(135deg,rgba(188,140,255,.1),rgba(220,170,255,.15))"><i class="fas fa-image" style="color:var(--purple)"></i></div>
+      <div class="gal-body">
+        <h3>图像生成</h3>
+        <p>DALL-E、Midjourney 等可根据文本描述生成高质量图像和艺术作品。</p>
+        <div class="tags"><span class="tag">DALL-E 3</span><span class="tag">Midjourney</span><span class="tag">Stable Diffusion</span></div>
+      </div>
+    </div>
+    <div class="gal-card">
+      <div class="gal-img" style="background:linear-gradient(135deg,rgba(247,120,186,.1),rgba(247,170,210,.15))"><i class="fas fa-heartbeat" style="color:var(--pink)"></i></div>
+      <div class="gal-body">
+        <h3>医疗健康</h3>
+        <p>AI 辅助诊断、药物研发和医学影像分析正在变革现代医疗体系。</p>
+        <div class="tags"><span class="tag">医学影像</span><span class="tag">AlphaFold</span><span class="tag">辅助诊断</span></div>
+      </div>
+    </div>
+    <div class="gal-card">
+      <div class="gal-img" style="background:linear-gradient(135deg,rgba(210,153,34,.1),rgba(230,180,80,.15))"><i class="fas fa-car" style="color:var(--orange)"></i></div>
+      <div class="gal-body">
+        <h3>自动驾驶</h3>
+        <p>基于深度感知的自动驾驶系统正在重塑未来出行方式。</p>
+        <div class="tags"><span class="tag">Tesla</span><span class="tag">Waymo</span><span class="tag">感知规划</span></div>
+      </div>
+    </div>
+    <div class="gal-card">
+      <div class="gal-img" style="background:linear-gradient(135deg,rgba(248,81,73,.1),rgba(248,130,120,.15))"><i class="fas fa-graduation-cap" style="color:var(--red)"></i></div>
+      <div class="gal-body">
+        <h3>个性化教育</h3>
+        <p>AI 导师可根据学生进度提供个性化辅导和自适应学习路径。</p>
+        <div class="tags"><span class="tag">自适应学习</span><span class="tag">智能辅导</span><span class="tag">Khanmigo</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="news">
+  <div class="section-title">
+    <h2><i class="fas fa-newspaper"></i> AI 实时资讯</h2>
+    <p>来自 Hacker News 与 GitHub 的最新 AI 动态</p>
+  </div>
+  <div class="news-tabs">
+    <button class="tab-btn active" data-tab="hn-ask">Hacker News 问答</button>
+    <button class="tab-btn" data-tab="hn-top">Hacker News 热榜</button>
+    <button class="tab-btn" data-tab="hn-show">Hacker News 展示</button>
+    <button class="tab-btn" data-tab="github">GitHub AI 项目</button>
+  </div>
+  <div id="newsLoading" style="text-align:center;padding:40px;color:var(--text2)"><i class="fas fa-spinner fa-spin" style="font-size:1.5rem"></i> 加载中...</div>
+  <div class="news-list" id="newsList" style="display:none"></div>
+  <div id="newsPagination" style="text-align:center;margin-top:20px;display:none"></div>
+</section>
+
+<button class="back-top" id="backTop" title="回到顶部"><i class="fas fa-arrow-up"></i></button>
+
+<footer>
+  <p>AI 科普百科 &copy; 2026 &nbsp;|&nbsp; 数据来源：<a href="https://news.ycombinator.com">Hacker News</a>、<a href="https://github.com">GitHub</a></p>
+  <p style="margin-top:6px">本页面仅作教育用途，所有内容均来自公开 API</p>
+</footer>
+
+<script>
+(function(){
+  // Theme
+  const html=document.documentElement;
+  const themeBtn=document.getElementById('themeBtn');
+  const saved=localStorage.getItem('ai-theme');
+  if(saved==='light'){html.classList.add('light');themeBtn.innerHTML='<i class="fas fa-sun"></i>';}
+  themeBtn.onclick=function(){
+    html.classList.toggle('light');
+    const isLight=html.classList.contains('light');
+    localStorage.setItem('ai-theme',isLight?'light':'dark');
+    themeBtn.innerHTML=isLight?'<i class="fas fa-sun"></i>':'<i class="fas fa-moon"></i>';
+  };
+
+  // Particles
+  const canvas=document.getElementById('particles');
+  const ctx=canvas.getContext('2d');
+  let W,H,particles=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  window.addEventListener('resize',resize);resize();
+  class Particle{
+    constructor(){this.reset();}
+    reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.4;this.vy=(Math.random()-.5)*.4;this.r=Math.random()*1.5+.5;this.o=Math.random()*.4+.1;}
+    update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W)this.vx*=-1;if(this.y<0||this.y>H)this.vy*=-1;}
+    draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(88,166,255,${this.o})`;ctx.fill();}
+  }
+  for(let i=0;i<80;i++)particles.push(new Particle());
+  function animate(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{p.update();p.draw();});
+    for(let i=0;i<particles.length;i++)for(let j=i+1;j<particles.length;j++){const a=particles[i],b=particles[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(88,166,255,${.08*(1-d/120)})`;ctx.lineWidth=.6;ctx.stroke();}}
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // Scroll fade-in
+  const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.1});
+  document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+
+  // Card toggle
+  window.toggleCard=function(card){card.classList.toggle('expanded');};
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.onclick=function(e){
+      e.preventDefault();
+      const t=document.querySelector(this.getAttribute('href'));
+      if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+    };
+  });
+
+  // Back top
+  const backTop=document.getElementById('backTop');
+  window.addEventListener('scroll',()=>{backTop.style.display=window.scrollY>500?'flex':'none';});
+  backTop.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+
+  // Search
+  document.getElementById('searchInput').addEventListener('input',function(){
+    const q=this.value.toLowerCase();
+    document.querySelectorAll('.card,.gal-item').forEach(el=>{
+      const t=el.textContent.toLowerCase();
+      el.style.display=t.includes(q)?'':'none';
+    });
+  });
+
+  // Active nav link on scroll
+  const sections=document.querySelectorAll('section[id]');
+  window.addEventListener('scroll',()=>{
+    let cur='';
+    sections.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id;});
+    document.querySelectorAll('.nav-links a').forEach(a=>{
+      a.classList.toggle('active',a.getAttribute('href')==='#'+cur);
+    });
+  });
+
+  // === News Module ===
+  const HN_API='https://hacker-news.firebaseio.com/v0';
+  const GH_API='https://api.github.com/search/repositories';
+  let currentTab='hn-ask',currentPage=1,totalPages=5;
+  const newsList=document.getElementById('newsList');
+  const loadingEl=document.getElementById('newsLoading');
+  const paginationEl=document.getElementById('newsPagination');
+
+  const hnIds={};
+  async function fetchHnIds(type){
+    if(hnIds[type])return hnIds[type];
+    const res=await fetch(`${HN_API}/${type}stories.json`);
+    const all=await res.json();
+    // filter even IDs to get manageable set
+    hnIds[type]=all.filter(id=>id%2===0).slice(0,100);
+    return hnIds[type];
+  }
+
+  async function fetchHNStories(type,page){
+    const ids=await fetchHnIds(type);
+    const start=(page-1)*5;
+    const pageIds=ids.slice(start,start+5);
+    const stories=await Promise.all(pageIds.map(id=>fetch(`${HN_API}/item/${id}.json`).then(r=>r.json())));
+    return stories.filter(Boolean).sort((a,b)=>(b.score||0)-(a.score||0));
+  }
+
+  async function fetchGithub(page){
+    const query='artificial-intelligence stars:>1000 language:Python';
+    const res=await fetch(`${GH_API}?q=${encodeURIComponent(query)}&sort=stars&order=desc&per_page=5&page=${page}`);
+    const data=await res.json();
+    return data.items||[];
+  }
+
+  function formatHNDate(ts){
+    if(!ts)return '';
+    const d=new Date(ts*1000);
+    return d.toLocaleDateString('zh-CN',{month:'short',day:'numeric'});
+  }
+
+  async function loadNews(){
+    loadingEl.style.display='block';newsList.style.display='none';paginationEl.style.display='none';
+    try{
+      let items=[];
+      if(currentTab==='github'){
+        const repos=await fetchGithub(currentPage);
+        items=repos.map(r=>{
+          const lang=r.language||'N/A';
+          return {
+            icon:'fab fa-github',iconBg:'rgba(188,140,255,.12)',iconColor:'var(--purple)',
+            title:r.full_name,
+            meta:`<span class="score"><i class="fas fa-star"></i> ${r.stargazers_count.toLocaleString()}</span><span class="domain">${lang}</span>`,
+            url:r.html_url,
+            desc:r.description||''
+          };
+        });
+      }else{
+        const typeMap={'hn-ask':'ask','hn-top':'top','hn-show':'show'};
+        const stories=await fetchHNStories(typeMap[currentTab],currentPage);
+        items=stories.map(s=>{
+          const isJob=s.type==='job';
+          return {
+            icon: isJob?'fas fa-briefcase':'fas fa-fire',
+            iconBg:isJob?'rgba(63,185,80,.12)':'rgba(210,153,34,.12)',
+            iconColor:isJob?'var(--green)':'var(--orange)',
+            title:s.title||'Untitled',
+            meta:`<span class="score"><i class="fas fa-arrow-up"></i> ${s.score||0}</span><span>${formatHNDate(s.time)}</span>`+(s.by?`<span>by ${s.by}</span>`:''),
+            url:s.url||`https://news.ycombinator.com/item?id=${s.id}`,
+            domain: s.url?new URL(s.url).hostname:'news.ycombinator.com'
+          };
+        });
+      }
+
+      if(items.length===0){
+        newsList.innerHTML='<p style="text-align:center;padding:40px;color:var(--text2)">暂无数据，请稍后再试</p>';
+        loadingEl.style.display='none';newsList.style.display='block';return;
+      }
+
+      newsList.innerHTML=items.map((n,i)=>`
+        <div class="news-item fade-up" style="animation-delay:${i*.08}s">
+          <div class="news-icon" style="background:${n.iconBg};color:${n.iconColor}"><i class="${n.icon}"></i></div>
+          <div class="news-info">
+            <h4><a href="${n.url}" target="_blank" rel="noopener">${n.title}</a></h4>
+            <div class="meta">${n.meta}</div>
+            ${n.domain?`<div style="font-size:.78rem;color:var(--text2);margin-top:4px"><i class="fas fa-external-link-alt"></i> ${n.domain}</div>`:''}
+          </div>
+        </div>
+      `).join('');
+
+      loadingEl.style.display='none';newsList.style.display='grid';
+
+      // Trigger fade-in for new items
+      newsList.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+
+      totalPages=5;
+      paginationEl.innerHTML=`<button class="load-more-btn" id="loadMore">加载更多 <i class="fas fa-chevron-down"></i></button>`;
+      paginationEl.style.display='block';
+      document.getElementById('loadMore').onclick=()=>{currentPage++;loadNews();};
+    }catch(err){
+      console.error(err);
+      loadingEl.innerHTML='<p style="color:var(--red)">加载失败，请检查网络后重试</p>';
+    }
+  }
+
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      this.classList.add('active');
+      currentTab=this.dataset.tab;currentPage=1;
+      loadNews();
+    });
+  });
+
+  loadNews();
+})();
+</script>
+</body>
+</html>
